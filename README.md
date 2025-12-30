@@ -54,14 +54,26 @@ This project demonstrates:
 
 ## Architecture
 
-```
-Frontend (Next.js)          Backend (Express)          MongoDB
------------------          ----------------          -------
-React Components             REST API                 users & transactions collections
-State Management              JWT Auth                  
-CSV Import via Multer         CRUD Endpoints            
-Charts with Recharts         ------------------
-```
+**Components and Flow:**
+
+- **Frontend (Next.js)**  
+  - React Components  
+  - Uses `apiClient` to call backend endpoints (`/api/jobs`)  
+  - Displays job queue and status  
+  - Triggers retries for failed jobs  
+
+- **Backend (Express.js)**  
+  - REST API Endpoints  
+    - `POST /api/jobs` → create a new job  
+    - `GET /api/jobs` → fetch job queue  
+    - `PATCH /api/jobs/:id/retry` → retry failed job  
+  - Handles job creation, processing, and retry logic  
+
+- **Database / Job Queue (MongoDB)**  
+  - Jobs Collection  
+    - Stores job details and payloads  
+    - Stores job status (`pending`, `running`, `completed`, `failed`)
+   
 
 **Flow**
 
