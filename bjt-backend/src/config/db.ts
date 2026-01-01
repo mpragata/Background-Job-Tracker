@@ -9,25 +9,27 @@ import { MongoClient, ServerApiVersion, Db } from "mongodb";
 const uri = process.env.MONGO_URI;
 const dbName = process.env.DB_NAME;
 
-if (!uri || !dbName) {
-  console.error(
-    "ERROR: MONGO_URI or DB_NAME environment variable is not defined. Please check your .env file."
-  );
-  process.exit(1);
-}
-
-// MongoClient instance
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
+let client: MongoClient | null = null;
 
 let dbInstance: Db | null = null;
 
 export async function connectDB(): Promise<Db> {
+  if (!uri || !dbName) {
+    console.error(
+      "ERROR: MONGO_URI or DB_NAME environment variable is not defined. Please check your .env file."
+    );
+    process.exit(1);
+  }
+
+  // MongoClient instance
+  const client = new MongoClient(uri, {
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+    },
+  });
+
   if (dbInstance) {
     console.log("MongoDB instance already connected.");
     return dbInstance;
